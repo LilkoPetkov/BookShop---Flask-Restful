@@ -1,9 +1,9 @@
-from flask_restful import Resource, Api
 from flask import request
+from flask_restful import Resource
 
-from app import db
-from models.users import User
-from schemas.request_schems.users import UserRegisterRequestSchema
+from managers.auth import AuthManager
+from schemas.request_schems.users import UserRegisterRequestSchema, UserLoginRequestSchema
+from schemas.response_schemas.users import UserAuthResponseSchema
 from utils.decorators import validate_schema
 
 
@@ -11,7 +11,17 @@ class RegisterResource(Resource):
     @validate_schema(UserRegisterRequestSchema)
     def post(self):
         data = request.get_json()
-        user = User(**data)
+        user = AuthManager.create_user(data)
+        token = AuthManager.encode_token(user)
 
-        db.session.add(user)
-        db.session.commit()
+        return UserAuthResponseSchema().dump({"token": token})
+
+
+class LoginResource(Resource):
+    @validate_schema(UserLoginRequestSchema)
+    def post(self):
+        data = request.get_json()
+        user = AuthManager.login_user(data)
+
+        token = AuthManager.encode_token(user)
+        return UserAuthResponseSchema().dump({"token": token})

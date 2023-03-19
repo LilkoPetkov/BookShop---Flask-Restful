@@ -1,21 +1,21 @@
 from flask import Flask
 from flask_migrate import Migrate
 from flask_restful import Api
-from flask_sqlalchemy import SQLAlchemy
-from decouple import config
+
+from db import db
+from resources.resources import routes
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql://{config("DB_USERNAME")}:{config("DB_PASSWORD")}@localhost:\
-{config("DB_PORT")}/{config("DB_NAME")}'
+#  DevelopmentConfig is coming from the config.py file as a class for the dev environment
+app.config.from_object("config.DevelopmentConfig")
 
-db = SQLAlchemy(app)
-from resources.auth import RegisterResource
 api = Api(app)
 migrate = Migrate(app, db)
 
-api.add_resource(RegisterResource)
+with app.app_context():
+    db.init_app(app)
 
-api.add_resource(RegisterResource, "/register")
+[api.add_resource(*route) for route in routes]
 
 if __name__ == "__main__":
     app.run()
