@@ -3,7 +3,7 @@ from flask_migrate import Migrate
 from flask_restful import Api
 
 from db import db
-from resources.resources import routes
+from resources.routes import routes
 
 app = Flask(__name__)
 #  DevelopmentConfig is coming from the config.py file as a class for the dev environment
@@ -19,3 +19,6 @@ with app.app_context():
 
 if __name__ == "__main__":
     app.run()
+
+#  Books table -> no relation to any users, it should be visible by anyone
+#  Users table -> connected to orders
