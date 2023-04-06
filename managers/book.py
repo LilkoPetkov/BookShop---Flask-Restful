@@ -9,3 +9,5 @@ class BookManager:
 
         db.session.add(book)
         db.session.commit()
+
+        return book

@@ -5,6 +5,6 @@ from resources.order import OrdersResource
 routes = (
     (RegisterResource, "/register"),
     (LoginResource, "/login"),
-    (OrdersResource, "/orders"),
+    (OrdersResource, "/post-orders"),
     (BookResource, "/add-book")
 )

@@ -5,6 +5,7 @@ from managers.auth import auth
 from managers.book import BookManager
 from models import RoleType
 from schemas.request_schems.books import BookRequestSchema
+from schemas.response_schemas.books import BookResponseSchema
 from utils.decorators import validate_schema, permission_required
 
 
@@ -14,7 +15,8 @@ class BookResource(Resource):
     @validate_schema(BookRequestSchema)
     def post(self):
         data = request.get_json()
+        book = BookManager.add_book(data)
 
-        BookManager.add_book(data)
+        print(data)
 
-        # return BookResponseSchema().dump({"token": token})
+        return BookResponseSchema().dump(book), 201
