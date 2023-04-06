@@ -92,4 +92,3 @@ else:
         f.write(
             f"Email sent! Message ID: {response['MessageId']}"
         )
-
