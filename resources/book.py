@@ -11,12 +11,10 @@ from utils.decorators import validate_schema, permission_required
 
 class BookResource(Resource):
     @auth.login_required
-    @permission_required(RoleType.client)
+    @permission_required(RoleType.admin)
     @validate_schema(BookRequestSchema)
     def post(self):
         data = request.get_json()
         book = BookManager.add_book(data)
-
-        print(data)
 
         return BookResponseSchema().dump(book), 201
