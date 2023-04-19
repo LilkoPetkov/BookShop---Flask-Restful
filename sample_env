@@ -6,3 +6,4 @@ JWT_KEY=keyForJWT
 MAIL_USERNAME=EmailUsername (should be verified on AWS, read more about it here -> https://docs.aws.amazon.com/ses/latest/dg/send-an-email-using-sdk-programmatically.html)
 
 REGION=awsRegionForSES
+STRIPE_KEY=StripeKey

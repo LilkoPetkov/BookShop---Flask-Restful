@@ -4,6 +4,7 @@ from db import db
 from managers.auth import auth
 from models import Order, Book, OrderStatus
 from services.SES import SESservice
+from services.STRP import PaymentSession
 from utils.logs import aws_logs
 
 
@@ -17,9 +18,13 @@ class OrderManager:
 
         if find_book_by_title:
             order_data["price_to_pay"] = find_book_by_title.price
+            P = PaymentSession()
+            payment_session = P.create_payment_session(current_user.first_name + current_user.last_name, int(order_data["price_to_pay"]*100), 2)
+            order_data["user_id"] = current_user.id
+            order_data["payment_link"] = payment_session["url"]
+            order_data["payment_session_id"] = payment_session["id"]
 
         current_user_email = current_user.email
-        order_data["user_id"] = current_user.id
         order = Order(**order_data)
         order_id = order.id
 
@@ -36,8 +41,6 @@ class OrderManager:
                 else:
                     SES.send_email()
 
-                # current_user["shopping_basket"] = 'book_title': find_book_by_title.title
-                # To Do: to get the shopping cart to accept objects
                 db.session.add(order)
                 db.session.commit()
 
@@ -61,11 +64,15 @@ class OrderManager:
     @staticmethod
     def _validate_order(order_id):
         order = Order.query.filter_by(id=order_id).first()
+        session_id = order.payment_session_id
 
         if not order:
             raise BadRequest("Order with such ID does not exist")
         if order.status != OrderStatus.pending:
             raise BadRequest("Cannot change status. Order is already processed")
+        if PaymentSession().check_payment_processed(session_id) != "paid":
+            raise BadRequest("The order is not paid still. It cannot be processed.")
+
 
     @staticmethod
     def approve_order(order_id):
@@ -77,6 +84,12 @@ class OrderManager:
     @staticmethod
     def reject_order(order_id):
         OrderManager._validate_order(order_id)
+        order = Order.query.filter_by(id=order_id).first()
+        session_id = order.payment_session_id
 
         Order.query.filter_by(id=order_id).update({"status": OrderStatus.rejected})
+
+        if PaymentSession().check_payment_processed(session_id) == "paid":
+            raise BadRequest("The payment has been processed already, the order cannot be rejected.")
+
         db.session.commit()

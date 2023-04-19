@@ -16,9 +16,4 @@ class User(db.Model):
         default=RoleType.client,
         nullable=False,
     )
-    card_holder_name = db.Column(db.String(255), nullable=False)
-    cvv = db.Column(db.Integer(), nullable=False)
-    card_number = db.Column(db.Integer(), nullable=False)
     shopping_basket = db.Column(db.String(), nullable=True)
-
-

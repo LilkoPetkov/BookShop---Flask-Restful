@@ -8,3 +8,4 @@ class OrderResponseSchema(Schema):
     delivery_address = fields.Str(required=True)
     price_to_pay = fields.Float(required=True)
     status = fields.Str(required=True)
+    payment_link = fields.Str(required=False)

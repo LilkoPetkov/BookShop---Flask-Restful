@@ -11,7 +11,7 @@ from utils.decorators import validate_schema, permission_required
 
 class BookResource(Resource):
     @auth.login_required
-    @permission_required(RoleType.admin)
+    @permission_required(RoleType.client)
     @validate_schema(BookRequestSchema)
     def post(self):
         data = request.get_json()
