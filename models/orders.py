@@ -19,7 +19,8 @@ class Order(db.Model):
         default=OrderStatus.pending,
         nullable=False
     )
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    buyer = db.relationship('User')
     payment_link = db.Column(db.String(1024), nullable=True)
     payment_session_id = db.Column(db.String(255), nullable=True)
+    quantity = db.Column(db.Integer, nullable=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    buyer = db.relationship('User')

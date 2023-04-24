@@ -22,5 +22,3 @@ with app.app_context():
 if __name__ == "__main__":
     app.run()
 
-#  Books table -> no relation to any users, it should be visible by anyone
-#  Users table -> connected to orders

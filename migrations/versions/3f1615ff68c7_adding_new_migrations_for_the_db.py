@@ -1,8 +1,8 @@
-"""Restoring the tables of the database, old migrations saved as well
+"""Adding new migrations for the DB
 
-Revision ID: a7c938232b5b
+Revision ID: 3f1615ff68c7
 Revises: 
-Create Date: 2023-04-19 12:21:30.880780
+Create Date: 2023-04-19 13:57:37.344503
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'a7c938232b5b'
+revision = '3f1615ff68c7'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -36,9 +36,6 @@ def upgrade():
     sa.Column('phone', sa.String(length=100), nullable=False),
     sa.Column('password', sa.String(length=255), nullable=False),
     sa.Column('role', sa.Enum('client', 'book_manager', 'admin', name='roletype'), nullable=False),
-    sa.Column('card_holder_name', sa.String(length=255), nullable=False),
-    sa.Column('cvv', sa.Integer(), nullable=False),
-    sa.Column('card_number', sa.String(length=255), nullable=False),
     sa.Column('shopping_basket', sa.String(), nullable=True),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('email')
@@ -52,8 +49,10 @@ def upgrade():
     sa.Column('price_to_pay', sa.Float(), nullable=False),
     sa.Column('posted_on', sa.DateTime(), nullable=False),
     sa.Column('status', sa.Enum('processed', 'pending', 'rejected', name='orderstatus'), nullable=False),
+    sa.Column('payment_link', sa.String(length=1024), nullable=True),
+    sa.Column('payment_session_id', sa.String(length=255), nullable=True),
+    sa.Column('quantity', sa.Integer(), nullable=True),
     sa.Column('user_id', sa.Integer(), nullable=False),
-    sa.Column('payment_link', sa.String(length=255), nullable=True),
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')
     )

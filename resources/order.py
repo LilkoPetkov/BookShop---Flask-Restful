@@ -5,7 +5,7 @@ from managers.auth import auth
 from managers.order import OrderManager
 from models import RoleType, Order
 from schemas.request_schems.orders import OrderRequestSchema
-from schemas.response_schemas.order import OrderResponseSchema
+from schemas.response_schemas.order import OrderResponseSchema, ClientOrderResponseSchema
 from utils.decorators import validate_schema, permission_required
 
 
@@ -26,7 +26,7 @@ class UserOrdersResource(Resource):
     def get(self):
         all_user_orders = OrderManager.get_all_user_orders()
 
-        return OrderResponseSchema(many=True).dump(all_user_orders)
+        return ClientOrderResponseSchema(many=True).dump(all_user_orders)
 
 
 class ManagerOrdersResource(Resource):

@@ -19,7 +19,10 @@ class OrderManager:
         if find_book_by_title:
             order_data["price_to_pay"] = find_book_by_title.price
             P = PaymentSession()
-            payment_session = P.create_payment_session(current_user.first_name + current_user.last_name, int(order_data["price_to_pay"]*100), 2)
+            payment_session = P.create_payment_session(
+                current_user.first_name + current_user.last_name,
+                int(order_data["price_to_pay"] * 100), order_data["quantity"]
+            )
             order_data["user_id"] = current_user.id
             order_data["payment_link"] = payment_session["url"]
             order_data["payment_session_id"] = payment_session["id"]
@@ -72,7 +75,6 @@ class OrderManager:
             raise BadRequest("Cannot change status. Order is already processed")
         if PaymentSession().check_payment_processed(session_id) != "paid":
             raise BadRequest("The order is not paid still. It cannot be processed.")
-
 
     @staticmethod
     def approve_order(order_id):
