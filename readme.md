@@ -31,8 +31,7 @@ for all operating systems. In order to create and manage the database it is also
     - Stripe API keys could be found in [Stripe](https://dashboard.stripe.com/test/apikeys) (Stripe account required).
 2. The **sample_env** file should be renamed to: **.env**
 3. After the environment variables are set, it is needed to run the database migrations.
-    - ```bash 
-    export FLASK_APP=app.py
+    - ```bash export FLASK_APP=app.py
     ```
     - ```bash flask db init```
     - ```bash flask db migrate -m "Add comment here"```
