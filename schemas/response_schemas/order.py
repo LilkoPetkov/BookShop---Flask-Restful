@@ -1,20 +1,11 @@
 from marshmallow import Schema, fields
 
+from schemas.response_schemas.base import OrderResponseBase
 
-class OrderResponseSchema(Schema):
-    posted_on = fields.Str(required=True)
-    book_title = fields.Str(required=True)
-    book_author = fields.Str(required=True)
-    delivery_address = fields.Str(required=True)
-    price_to_pay = fields.Float(required=True)
+
+class OrderResponseSchema(OrderResponseBase):
     payment_link = fields.Str(required=False)
-    quantity = fields.Integer(required=True)
 
 
-class ClientOrderResponseSchema(Schema):
-    posted_on = fields.Str(required=True)
-    book_title = fields.Str(required=True)
-    book_author = fields.Str(required=True)
-    delivery_address = fields.Str(required=True)
-    price_to_pay = fields.Float(required=True)
-    quantity = fields.Integer(required=True)
+class ClientOrderResponseSchema(OrderResponseBase):
+    pass

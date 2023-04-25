@@ -1,3 +1,5 @@
+from datetime import datetime
+
 import boto3
 from botocore.exceptions import ClientError
 from decouple import config
@@ -6,8 +8,7 @@ from utils.logs import aws_logs
 
 
 class SESservice:
-    def __init__(self, recipient, oid):
-        self.oid = oid
+    def __init__(self, recipient):
         self.region = config("REGION")
         self.recipient = recipient
         self.ses = boto3.client('ses',
@@ -38,7 +39,7 @@ class SESservice:
 
         SUBJECT = "Your order has been created"
 
-        BODY_TEXT = (f"Your order has been created. The Order ID is: {self.oid}\r\n"
+        BODY_TEXT = (f"Your order has been created. The Order ID is: \r\n"
                      "This emails was sent as a confirmation, please do not reply to it. "
                      "Best regards shop_name."
                      )
@@ -90,10 +91,10 @@ class SESservice:
 
             with open(aws_logs, "a") as f:
                 f.write(
-                    f"Email sent! Message ID: {e.response['Error']['Message']} + \n"
+                    f"[{datetime.utcnow()}] - Email sent! Message ID: {e.response['Error']['Message']}\n"
                 )
         else:
             with open(aws_logs, "a") as f:
                 f.write(
-                    f"Email sent! Message ID: {response['MessageId']} + \n"
+                    f"[{datetime.utcnow()}] - Email sent! Message ID: {response['MessageId']}\n"
                 )

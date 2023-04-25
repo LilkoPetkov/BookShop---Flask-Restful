@@ -20,8 +20,8 @@ class PaymentSession:
             },
           ],
           mode="payment",
-          success_url="http://localhost:5000/success.html",  # URL from the frontend app for successful payment
-          cancel_url="http://localhost:5000/cancel.html",  # URL from the frontend app for unsuccessful payment
+          success_url=f"http://127.0.0.1:5000/success.html",
+          cancel_url="http://localhost:5000/cancel.html",
         )
 
         return payment_session

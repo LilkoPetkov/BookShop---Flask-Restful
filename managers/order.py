@@ -5,7 +5,6 @@ from managers.auth import auth
 from models import Order, Book, OrderStatus
 from services.SES import SESservice
 from services.STRP import PaymentSession
-from utils.logs import aws_logs
 
 
 class OrderManager:
@@ -15,32 +14,31 @@ class OrderManager:
         requested_title = order_data["book_title"]
         requested_author = order_data["book_author"]
         find_book_by_title = Book.query.filter_by(title=requested_title).first()
+        current_user_email = current_user.email
+        order = Order(**order_data)
 
         if find_book_by_title:
-            order_data["price_to_pay"] = find_book_by_title.price
+            order.price_to_pay = find_book_by_title.price
             P = PaymentSession()
             payment_session = P.create_payment_session(
                 current_user.first_name + current_user.last_name,
-                int(order_data["price_to_pay"] * 100), order_data["quantity"]
+                int(order.price_to_pay * 100),
+                order_data["quantity"],
             )
-            order_data["user_id"] = current_user.id
-            order_data["payment_link"] = payment_session["url"]
-            order_data["payment_session_id"] = payment_session["id"]
+            order.user_id = current_user.id
+            order.payment_link = payment_session["url"]
+            order.payment_session_id = payment_session["id"]
 
-        current_user_email = current_user.email
-        order = Order(**order_data)
-        order_id = order.id
+        # current_user_email = current_user.email
+        # order = Order(**order_data)
+        # order_id = order.id
 
         if find_book_by_title:
             if find_book_by_title.author == requested_author:
-                SES = SESservice(current_user_email, order_id)
+                SES = SESservice(current_user_email)
                 # Required only for sandbox accounts, for production SES.send_email() is enough.
                 if not SES.is_verified():
-                    res = dict(SES.verify_email())
-
-                    with open(aws_logs, "a") as f:
-                        f.write(str(res) + "\n")
-
+                    SES.verify_email()
                 else:
                     SES.send_email()
 

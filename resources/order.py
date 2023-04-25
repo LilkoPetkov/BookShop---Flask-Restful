@@ -26,7 +26,7 @@ class UserOrdersResource(Resource):
     def get(self):
         all_user_orders = OrderManager.get_all_user_orders()
 
-        return ClientOrderResponseSchema(many=True).dump(all_user_orders)
+        return ClientOrderResponseSchema(many=True).dump(all_user_orders), 200
 
 
 class ManagerOrdersResource(Resource):
@@ -35,7 +35,7 @@ class ManagerOrdersResource(Resource):
     def get(self):
         all_orders = OrderManager._get_all_orders()
 
-        return OrderResponseSchema(many=True).dump(all_orders)
+        return OrderResponseSchema(many=True).dump(all_orders), 200
 
 
 class OrderProcessResource(Resource):
