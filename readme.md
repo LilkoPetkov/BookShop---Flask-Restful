@@ -29,6 +29,8 @@ for all operating systems. In order to create and manage the database it is also
 1. Make sure to update the sample_env with the correct details for Postgre and additional services (AWS, Stripe, etc).
     - The AWS security details could be found in your AWS account -> Profile Dropdown -> Security credentials
     - Stripe API keys could be found in [Stripe](https://dashboard.stripe.com/test/apikeys) (Stripe account required).
+        - In folder: Services -> STRP.py the Stripe code is extended and can be implemented for automatic charges and service renewals.
+        - For the purpoases of the project it is not needed and it is commented. 
 2. The **sample_env** file should be renamed to: **.env**
 3. After the environment variables are set, it is needed to run the database migrations.
     - ```export FLASK_APP=app.py```
