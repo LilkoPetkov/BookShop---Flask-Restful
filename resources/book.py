@@ -12,8 +12,15 @@ from utils.decorators import validate_schema, permission_required
 
 
 class BookResource(Resource):
+    def get(self):
+        books = Book.query.filter_by().all()
+
+        return BookResponseSchema(many=True).dump(books)
+
+
+class AddBookResource(Resource):
     @auth.login_required
-    @permission_required(RoleType.admin)
+    @permission_required(RoleType.book_manager)
     @validate_schema(BookRequestSchema)
     def post(self):
         data = request.get_json()
@@ -21,20 +28,15 @@ class BookResource(Resource):
 
         return BookResponseSchema().dump(book), 201
 
-    def get(self):
-        books = Book.query.filter_by().all()
-
-        return BookResponseSchema(many=True).dump(books)
-
 
 class BooksResource(Resource):
     @auth.login_required
-    @permission_required(RoleType.admin)
+    @permission_required(RoleType.book_manager)
     def delete(self, _id):
         book = Book.query.filter_by(id=_id).first()
-        book_name = book.title
 
         if book:
+            book_name = book.title
             db.session.delete(book)
             db.session.commit()
 

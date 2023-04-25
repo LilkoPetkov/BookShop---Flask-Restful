@@ -29,10 +29,6 @@ class OrderManager:
             order.payment_link = payment_session["url"]
             order.payment_session_id = payment_session["id"]
 
-        # current_user_email = current_user.email
-        # order = Order(**order_data)
-        # order_id = order.id
-
         if find_book_by_title:
             if find_book_by_title.author == requested_author:
                 SES = SESservice(current_user_email)

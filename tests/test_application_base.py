@@ -40,7 +40,7 @@ class TestLoginRequired(TestRESTApiBase):
         assert res.json == {"message": "You do not have permission to access this resource"}
 
     def test_permission_required_delete_book_requires_admin_book_manager(self):
-        user = UserFactory(role=RoleType.book_manager)
+        user = UserFactory(role=RoleType.admin)
         token = generate_token(user)
         headers = {"Authorization": f"Bearer {token}"}
 
@@ -69,7 +69,7 @@ class TestLoginRequired(TestRESTApiBase):
         assert res.status_code == 403
         assert res.json == {"message": "You do not have permission to access this resource"}
 
-    def test_get_all_orders_requires_book_manager_admin(self):
+    def test_get_all_orders_requires_admin_book_manager(self):
         user = UserFactory(role=RoleType.client)
         token = generate_token(user)
         headers = {"Authorization": f"Bearer {token}"}
@@ -79,8 +79,8 @@ class TestLoginRequired(TestRESTApiBase):
         assert res.status_code == 403
         assert res.json == {"message": "You do not have permission to access this resource"}
 
-    def test_permission_required_to_approve_reject_orders_requires_book_manager(self):
-        user = UserFactory(role=RoleType.admin)
+    def test_permission_required_to_approve_reject_orders_requires_admin(self):
+        user = UserFactory(role=RoleType.book_manager)
         token = generate_token(user)
         headers = {"Authorization": f"Bearer {token}"}
 
@@ -93,3 +93,4 @@ class TestLoginRequired(TestRESTApiBase):
 
         assert res.status_code == 403
         assert res.json == {"message": "You do not have permission to access this resource"}
+

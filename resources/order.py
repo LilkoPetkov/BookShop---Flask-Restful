@@ -31,7 +31,7 @@ class UserOrdersResource(Resource):
 
 class ManagerOrdersResource(Resource):
     @auth.login_required
-    @permission_required(RoleType.book_manager)
+    @permission_required(RoleType.admin)
     def get(self):
         all_orders = OrderManager._get_all_orders()
 
@@ -40,7 +40,7 @@ class ManagerOrdersResource(Resource):
 
 class OrderProcessResource(Resource):
     @auth.login_required
-    @permission_required(RoleType.book_manager)
+    @permission_required(RoleType.admin)
     def get(self, _id):
         order = Order.query.filter_by(id=_id).first()
         OrderManager.approve_order(_id)
@@ -50,7 +50,7 @@ class OrderProcessResource(Resource):
 
 class OrderRejectResource(Resource):
     @auth.login_required
-    @permission_required(RoleType.book_manager)
+    @permission_required(RoleType.admin)
     def get(self, _id):
         order = Order.query.filter_by(id=_id).first()
         OrderManager.reject_order(_id)

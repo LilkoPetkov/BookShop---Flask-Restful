@@ -1,6 +1,6 @@
 from marshmallow import fields, validate
 
-from schemas.response_schemas.base import UserRequestBase
+from schemas.request_schems.base import UserRequestBase
 from utils.validations import Validation
 
 validation = Validation()

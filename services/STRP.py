@@ -7,7 +7,8 @@ stripe.api_key = config("STRIPE_KEY")
 
 
 class PaymentSession:
-    def create_payment_session(self, name, price, quantity=1):
+    @staticmethod
+    def create_payment_session(name, price, quantity=1):
         payment_session = stripe.checkout.Session.create(
           line_items=[
             {
@@ -20,7 +21,7 @@ class PaymentSession:
             },
           ],
           mode="payment",
-          success_url=f"http://127.0.0.1:5000/success.html",
+          success_url="http://127.0.0.1:5000/success.html",
           cancel_url="http://localhost:5000/cancel.html",
         )
 
@@ -42,6 +43,7 @@ The User's table would need to be extended to receive the CC details.
 """
 
 # stripe.api_key = config("STRIPE_KEY")
+# https://dashboard.stripe.com/test/payments
 
 # class Stripe:
 #     PM = None

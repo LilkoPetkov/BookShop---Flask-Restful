@@ -40,7 +40,8 @@ class Validation:
     @staticmethod
     def validate_cvv(cvv):
         if len(str(cvv)) == 3 or len(str(cvv)) == 4:
-            return cvv
+            if all([s.isdigit() for s in str(cvv)]):
+                return cvv
 
         raise ValidationError("Invalid Card Verification Value Number")
 
