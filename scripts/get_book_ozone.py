@@ -60,8 +60,7 @@ class FindAndAddBook:
     def add_book(self):
         data = self.get_book_values()
         end_point = "http://127.0.0.1:5000/add-book"
-        header = {"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsImV4cCI6MTY4MjcwMDEwN30"
-                                   ".chHWEG9KgUrDW9pVsWT_tHg0nS46UCqdzg4YX0u3kpw"}
+        header = {"Authorization": "Bearer "}
         response = requests.post(end_point, headers=header, json=data)
 
         return response.text
