@@ -21,7 +21,7 @@ class PaymentSession:
             },
           ],
           mode="payment",
-          success_url="http://127.0.0.1:5000/success.html",
+          success_url="https://lilkop10.sg-host.com/",
           cancel_url="http://localhost:5000/cancel.html",
         )
 
