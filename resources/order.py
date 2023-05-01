@@ -1,5 +1,6 @@
 from flask import request
 from flask_restful import Resource
+from werkzeug.exceptions import BadRequest
 
 from managers.auth import auth
 from managers.order import OrderManager
@@ -43,9 +44,13 @@ class OrderProcessResource(Resource):
     @permission_required(RoleType.admin)
     def get(self, _id):
         order = Order.query.filter_by(id=_id).first()
-        OrderManager.approve_order(_id)
 
-        return {"message": f"Order {order.id} successfully processed"}, 200
+        if order:
+            OrderManager.approve_order(_id)
+
+            return {"message": f"Order {order.id} successfully processed"}, 200
+
+        raise BadRequest(f"Order with ID: {_id} does not exist")
 
 
 class OrderRejectResource(Resource):
@@ -53,6 +58,9 @@ class OrderRejectResource(Resource):
     @permission_required(RoleType.admin)
     def get(self, _id):
         order = Order.query.filter_by(id=_id).first()
-        OrderManager.reject_order(_id)
 
-        return {"message": f"Order {order.id} successfully rejected"}, 200
+        if order:
+            OrderManager.reject_order(_id)
+            return {"message": f"Order {order.id} successfully rejected"}, 200
+
+        raise BadRequest(f"Order with ID: {_id} does not exist")

@@ -61,14 +61,11 @@ class OrderManager:
     @staticmethod
     def _validate_order(order_id):
         order = Order.query.filter_by(id=order_id).first()
-        session_id = order.payment_session_id
 
         if not order:
             raise BadRequest("Order with such ID does not exist")
         if order.status != OrderStatus.pending:
             raise BadRequest("Cannot change status. Order is already processed")
-        if PaymentSession().check_payment_processed(session_id) != "paid":
-            raise BadRequest("The order is not paid still. It cannot be processed.")
 
     @staticmethod
     def approve_order(order_id):

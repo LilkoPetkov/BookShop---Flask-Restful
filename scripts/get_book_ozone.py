@@ -59,14 +59,15 @@ class FindAndAddBook:
 
     def add_book(self):
         data = self.get_book_values()
-        end_point = "http://127.0.0.1:5000/add-book"
-        header = {"Authorization": "Bearer $TOKEN"}
+        end_point = "http://127.0.0.1:5000/books"
+        header = {"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsImV4cCI6MTY4MzA5MjU5NH0"
+                                   ".60p2c42yh8L7JkBfmlTq6AU21XSIQ1mKp8QzIybkuOs"}
         response = requests.post(end_point, headers=header, json=data)
 
         return response.text
 
 
-url = "https://www.ozone.bg/product/zheleznite-fei-zhelezniyat-kral-1/"
+url = "https://www.ozone.bg/product/taynata-na-patsienta/"
 FBook = FindAndAddBook(url)
 
 print(FBook.add_book())

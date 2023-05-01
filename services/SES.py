@@ -43,6 +43,7 @@ class SESservice:
                      "This emails was sent as a confirmation, please do not reply to it. "
                      "Best regards shop_name."
                      )
+        # Send via email the payment link
 
         BODY_HTML = """<html>
         <head></head>

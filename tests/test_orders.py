@@ -117,7 +117,6 @@ class TestOrder(TestRESTApiBase):
 
     @patch.object(PaymentSession, "check_payment_processed", return_value="test")
     def test_approve_order(self, mock_stripe_payment_session):
-        # Book does not exist, mocked payment checkout
         user = UserFactory(role=RoleType.admin)
         user.id = 2
         order = OrderFactory()
@@ -127,13 +126,19 @@ class TestOrder(TestRESTApiBase):
             "Content-Type": "application/json"
         }
 
-        res = self.client.get(f"/process-order/{order.id}", headers=headers)
+        order = Order.query.filter_by(id=order.id).first()
+        assert order.id == order.id
 
-        assert res.status_code == 400
+        res = self.client.get(f"/process-order/{order.id}", headers=headers)
+        assert res.status_code == 200
+
+        order = Order.query.filter_by(id=order.id).first()
+        assert res.json == {
+            'message': "Order 0 successfully processed"
+        }
 
     @patch.object(PaymentSession, "check_payment_processed", return_value="test")
     def test_reject_order(self, mock_stripe_payment_session):
-        # Book does not exist, mocked payment checkout
         user = UserFactory(role=RoleType.admin)
         user.id = 2
         order = OrderFactory()
@@ -145,7 +150,7 @@ class TestOrder(TestRESTApiBase):
 
         res = self.client.get(f"/process-order/{order.id}", headers=headers)
 
-        assert res.status_code == 400
+        assert res.status_code == 200
 
     def test_get_all_user_orders(self):
         user = UserFactory(role=RoleType.client)

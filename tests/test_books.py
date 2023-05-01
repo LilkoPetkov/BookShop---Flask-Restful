@@ -27,6 +27,7 @@ class TestBookSchema(TestRESTApiBase):
         headers = {"Authorization": f"Bearer {token}", "Content-Type": "application/json"}
 
         res = self.client.delete(f"/books/{book.id}/delete", headers=headers)
+        # filter by to check if the book is added and then deleted
 
         assert res.status_code == 200
 
